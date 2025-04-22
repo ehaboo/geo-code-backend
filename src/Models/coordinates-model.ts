@@ -1,7 +1,16 @@
 class CoordinatesModel{
-    // check google api response 
-    latitude:string; 
-    longitude:string; 
+    results: [
+        {
+            geometry:{
+                location:{
+                    lat:number;
+                    lng:number; 
+                }
+            }
+        }
+    ]
+   
 }
 
 export default CoordinatesModel; 
+

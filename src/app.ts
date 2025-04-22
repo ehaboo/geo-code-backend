@@ -9,6 +9,10 @@ import popularSearchListRouter from "./routes/popular-search-list-routes";
 
 
 
+
+
+
+
 const server = express();
 server.use(fileLogger); 
 
@@ -21,6 +25,9 @@ server.use("/api/popular-search-list",popularSearchListRouter)
 
 
 
+
+
 server.use(routeNotFound);
 server.use(catchAll);
+
 server.listen(appConfig.port, () => console.log(`Listening on ${appConfig.serverUrl}`))

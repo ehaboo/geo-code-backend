@@ -14,6 +14,7 @@ async function logFileExists() {
     }
     
 }
+
 const errorFile = path.join(logDir, "errors.log"); 
 const activityFile = path.join(logDir, "activity.log");
 
@@ -26,6 +27,7 @@ async function errorsLogger( msg:string, err:any ):Promise<void>{
     if(typeof err === "string") message += err + "\n" 
     if( err?.stack ) message += `Stack: ${err.stack} \n`;
     message += "----------------------\n";
+
     try {
         await fsPromises.appendFile(errorFile, message );
     } catch (err:any) {
@@ -35,10 +37,12 @@ async function errorsLogger( msg:string, err:any ):Promise<void>{
 
 async function activityLogger( msg:string ):Promise<void>{
     await logFileExists();
+    
     const now = new Date();
     let message = now.toLocaleString() + "\n";
     message += msg + "\n";
     message += "----------------------\n";
+
     try {
         await fsPromises.appendFile(activityFile, message);
     } catch (err:any) {

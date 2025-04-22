@@ -1,5 +1,5 @@
 import appConfig from "./config";
-import pg from "pg"; 
+import pg, { QueryResult } from "pg"; 
 
 const db = new pg.Client({
     user: appConfig.pgUser, 
@@ -12,13 +12,13 @@ const db = new pg.Client({
 
 db.connect(); 
 
-function execute(sql: string, values?: any[]): Promise<any> {
+function execute(sql: string, values?: any[]): Promise<QueryResult> {
     return new Promise((resolve, reject) => {        
         db.query(sql, values, (err:any, result:any) => {
             if (err) {
                 reject(err);
             }
-            resolve(result.rows);
+            resolve(result);
         })
     });
 }

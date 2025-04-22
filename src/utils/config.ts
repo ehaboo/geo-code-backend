@@ -13,6 +13,8 @@ class Config {
     public pgPassword = process.env.PG_PASSWORD;
     public pgPort = +process.env.PG_PORT;
 
+    public googleApiUrl = process.env.GOOGLE_API_URL;
+    public googleApiKey = process.env.GOOGLE_API_KEY;
 }
 
 
