@@ -1,15 +1,23 @@
-import PopularSearchModel from "../Models/popular-search-model";
+import { QueryResult } from "pg";
+import CoordinatesModel from "../Models/coordinates-model";
+import dal from "../utils/dal";
 
 
 
 
 
-async function getPopularSearchList():Promise<PopularSearchModel[]> {
-    let popularSearchList: PopularSearchModel[]; 
-    // check in db the first 5 most popular search (sql query)
-    // return it 
+async function getPopularSearchList():Promise<CoordinatesModel[]> {
+    const sql  = `SELECT * FROM public.locations ORDER BY hits DESC LIMIT 5;`
+    const result:QueryResult = await dal.execute(sql); 
+    console.log(result.rows);
+    if (!result.rows.length) {
+        console.log("No data found.");
+        return null;
+    }    
+    const popularSearchList: CoordinatesModel[] = result.rows; 
+    
+
     console.log("popular-search-list service :)");
-
     return popularSearchList; 
 }
 

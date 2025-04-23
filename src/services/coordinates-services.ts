@@ -1,20 +1,19 @@
-import CoordinatesModel from "../Models/coordinates-model";
+import DataModel from "../Models/data-model";
 import appConfig from "../utils/config";
 import axios from "axios";
 import dal from "../utils/dal";
-import PopularSearchModel from "../Models/popular-search-model";
+import CoordinatesModel from "../Models/coordinates-model";
 import { QueryResult } from "pg";
 
 async function getCoordinates(address: string): Promise<CoordinatesModel| null> {
-    const sql = `SELECT * FROM public.locations WHERE address = $1`;
-    const resultObj:QueryResult  = await dal.execute(sql, [address]);
-    const result = resultObj.rows;
     
-    if (result.length > 0) {
+    const result = await getDataFromDatabase(address); 
+    
+    if (result) {
         try {
             await updateHits(address);
-            result[0].hits++
-            return result[0];  
+            result.hits++
+            return result;  
         } catch (error:any) {
             console.log(error.message);
             
@@ -22,10 +21,10 @@ async function getCoordinates(address: string): Promise<CoordinatesModel| null> 
     }
 
     try {
-        const res = await axios.get<CoordinatesModel>(`${appConfig.googleApiUrl}?address=${address}&key=${appConfig.googleApiKey}`);
+        const res = await axios.get<DataModel>(`${appConfig.googleApiUrl}?address=${address}&key=${appConfig.googleApiKey}`);
         const results = res.data.results;
 
-        if (!results || !results.length) {
+        if (!results.length) {
             console.log("No coordinates found.");
             return null;
         }
@@ -33,13 +32,20 @@ async function getCoordinates(address: string): Promise<CoordinatesModel| null> 
         const location = results[0].geometry.location;
         await addAddressCoordinates(address, location);
 
+        const result = await getDataFromDatabase(address); 
         
-        
-        return res.data;
+        return result;
     } catch (error:any) {
         console.log(error.message);
         return null;
     }
+}
+
+async function getDataFromDatabase(address:string):Promise<CoordinatesModel>{
+    const sql = `SELECT * FROM public.locations WHERE address = $1`;
+    const resultObj:QueryResult  = await dal.execute(sql, [address]);
+    const result = resultObj.rows[0];
+    return result;
 }
 
 
