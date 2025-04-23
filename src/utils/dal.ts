@@ -1,27 +1,23 @@
 import appConfig from "./config";
 import pg, { QueryResult } from "pg"; 
 
-const db = new pg.Client({
+
+const pool = new pg.Pool({
     user: appConfig.pgUser, 
     host: appConfig.pgHost, 
     database: appConfig.pgDataBase, 
     password: appConfig.pgPassword, 
     port: appConfig.pgPort
-});
+}); 
 
-
-db.connect(); 
-
-function execute(sql: string, values?: any[]): Promise<QueryResult> {
-    return new Promise((resolve, reject) => {        
-        db.query(sql, values, (err:any, result:any) => {
-            if (err) {
-                reject(err);
-            }
-            resolve(result);
-        })
-    });
-}
-
+async function execute(sql: string, values?: any[]): Promise<QueryResult> {
+    try {
+        const result:QueryResult = await pool.query(sql,values); 
+        return result;  
+    } catch (error:any) {
+        console.log(error.message);
+        
+    }
+    }
 
 export default {execute}
