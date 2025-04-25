@@ -1,4 +1,5 @@
 import express from "express"; 
+import cors from "cors"; 
 import appConfig from "./utils/config";
 import fileLogger from "./middleware/file-logger";
 import catchAll from "./middleware/catch-all";
@@ -14,6 +15,7 @@ import popularSearchListRouter from "./routes/popular-search-list-routes";
 
 
 const server = express();
+server.use(cors())
 server.use(fileLogger); 
 
 server.use("/api/coordinates", coordinatesRouter)

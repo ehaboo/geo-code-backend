@@ -8,7 +8,6 @@ async function getPopularSearch():Promise<CoordinatesModel| null>{
 
     const sql  = `SELECT * FROM public.locations ORDER BY hits DESC LIMIT 1;`
     const result:QueryResult = await dal.execute(sql); 
-    console.log(result.rows);
     if (!result.rows.length) {
         console.log("No data found.");
         return null;
