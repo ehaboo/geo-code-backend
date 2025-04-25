@@ -51,7 +51,7 @@ async function getDataFromDatabase(address:string):Promise<CoordinatesModel>{
 
 async function addAddressCoordinates(address: string, coordinate: { lat: number, lng: number }): Promise<void> {
     const sql = `INSERT INTO public.locations VALUES (DEFAULT, $1, $2, $3, 1)`; 
-     await dal.execute(sql, [address, coordinate.lat, coordinate.lng]);
+     await dal.execute(sql, [address, coordinate.lat.toFixed(7), coordinate.lng.toFixed(7)]);
     
     
 }

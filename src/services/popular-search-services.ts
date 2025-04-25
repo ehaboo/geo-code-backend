@@ -16,7 +16,6 @@ async function getPopularSearch():Promise<CoordinatesModel| null>{
     
     const popularSearch:CoordinatesModel = result.rows[0]; 
     
-    console.log("popular-search service :)");
     return popularSearch; 
 }
 

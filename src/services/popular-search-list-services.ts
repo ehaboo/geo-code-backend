@@ -17,7 +17,6 @@ async function getPopularSearchList():Promise<CoordinatesModel[]> {
     const popularSearchList: CoordinatesModel[] = result.rows; 
     
 
-    console.log("popular-search-list service :)");
     return popularSearchList; 
 }
 
