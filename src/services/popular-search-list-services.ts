@@ -11,7 +11,7 @@ async function getPopularSearchList():Promise<CoordinatesModel[]> {
     const result:QueryResult = await dal.execute(sql); 
     if (!result.rows.length) {
         console.log("No data found.");
-        return null;
+        return;
     }    
     const popularSearchList: CoordinatesModel[] = result.rows; 
     
