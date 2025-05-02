@@ -11,29 +11,12 @@ async function getCoordinates(address: string): Promise<CoordinatesModel> {
 
     let coordinates:CoordinatesModel; 
     if (result) {
-        try {
-            await updateHits(address);
-        } catch (error: any) {
-            console.log(error.message);
-
-        }
+        await updateHits(address);
     } else {
-        try {
-            
-            await getDataFromGoogleApi(address);
-        } catch (error:any) {
-            console.log(error.message);
-            
-        }
+        await getDataFromGoogleApi(address);
     } 
 
-    try {
-        coordinates = await getDataFromDatabase(address);
-    } catch (error:any) {
-        console.log(error.message);
-    }
-
-
+    coordinates = await getDataFromDatabase(address);
     return coordinates;
 }
 
