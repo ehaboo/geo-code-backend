@@ -2,24 +2,18 @@ import { QueryResult } from "pg";
 import CoordinatesModel from "../Models/coordinates-model";
 import dal from "../utils/dal";
 
+async function getPopularSearchList(): Promise<CoordinatesModel[]> {
+  const sql = `SELECT * FROM public.locations ORDER BY hits DESC LIMIT 5;`;
+  const result: QueryResult = await dal.execute(sql);
+  if (!result.rows.length) {
+    console.log("No data found.");
+    return;
+  }
+  const popularSearchList: CoordinatesModel[] = result.rows;
 
-
-
-
-async function getPopularSearchList():Promise<CoordinatesModel[]> {
-    const sql  = `SELECT * FROM public.locations ORDER BY hits DESC LIMIT 5;`
-    const result:QueryResult = await dal.execute(sql); 
-    if (!result.rows.length) {
-        console.log("No data found.");
-        return;
-    }    
-    const popularSearchList: CoordinatesModel[] = result.rows; 
-    
-
-    return popularSearchList; 
+  return popularSearchList;
 }
-
 
 export default {
-    getPopularSearchList
-}
+  getPopularSearchList,
+};
