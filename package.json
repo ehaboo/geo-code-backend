@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "prepare": "prisma generate",
     "start": "nodemon src/app.ts"
   },
   "keywords": [],

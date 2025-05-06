@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../node_modules/generate"
 }
 
 datasource db {
@@ -9,7 +10,7 @@ datasource db {
 
 model locations {
   id      Int    @id @default(autoincrement())
-  address String @db.VarChar(200) @unique
+  address String @unique @db.VarChar(200)
   lat     Float?
   lng     Float?
   hits    Int?
