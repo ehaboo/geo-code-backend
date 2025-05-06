@@ -1,17 +1,20 @@
-import { QueryResult } from "pg";
 import CoordinatesModel from "../Models/coordinates-model";
-import dal from "../utils/dal";
+import prisma from "../utils/prisma";
 
-async function getPopularSearchList(): Promise<CoordinatesModel[]> {
-  const sql = `SELECT * FROM public.locations ORDER BY hits DESC LIMIT 5;`;
-  const result: QueryResult = await dal.execute(sql);
-  if (!result.rows.length) {
+async function getPopularSearchList(): Promise<CoordinatesModel[] | null> {
+  const topFive = await prisma.locations.findMany({
+    orderBy: {
+      hits: "desc",
+    },
+    take: 5,
+  });
+
+  if (!topFive.length) {
     console.log("No data found.");
-    return;
+    return null;
   }
-  const popularSearchList: CoordinatesModel[] = result.rows;
 
-  return popularSearchList;
+  return topFive;
 }
 
 export default {
